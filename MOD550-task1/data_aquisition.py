@@ -41,4 +41,6 @@ class DataAquisition:
         plt.grid(True)
         plt.show()
 
+    
+
 
