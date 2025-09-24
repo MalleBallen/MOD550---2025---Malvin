@@ -10,10 +10,10 @@ class DataAquisition:
     
     @staticmethod
     def generate_2d_dist(size):
-        # Triangular distribution (not Poisson as the variable name suggests)
+        # Triangular distribution 
         random_dist_triangular = np.random.triangular(left=0, mode=5, right=10, size=size)
         
-        # Normal distribution (not exponential as the variable name suggests)
+        # Normal distribution 
         random_dist_normal = np.random.normal(loc=5, scale=2, size=size)
         
         # Combine the two distributions column-wise
