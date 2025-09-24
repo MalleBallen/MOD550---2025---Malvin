@@ -1,0 +1,10 @@
+# Requirements for the project
+# For markdown
+ipykernel
+
+# For data processing and other tasks
+pandas >= 2.0.0
+numpy
+matplotlib
+pyarrow
+
