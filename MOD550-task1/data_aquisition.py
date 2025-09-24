@@ -6,6 +6,21 @@ class DataAquisition:
 
     def __init__(self, data):
         self.data = data
+    
+    
+    @staticmethod
+    def generate_2d_dist(size):
+        # Triangular distribution (not Poisson as the variable name suggests)
+        random_dist_triangular = np.random.triangular(left=0, mode=5, right=10, size=size)
+        
+        # Normal distribution (not exponential as the variable name suggests)
+        random_dist_normal = np.random.normal(loc=5, scale=2, size=size)
+        
+        # Combine the two distributions column-wise
+        random_combined = np.column_stack((random_dist_triangular, random_dist_normal))
+        
+        return random_combined
+
 
     #Works for exercise 3 also
     def plot_histograms(self, bins=50):
