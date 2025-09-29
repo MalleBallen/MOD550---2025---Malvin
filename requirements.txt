@@ -6,5 +6,5 @@ ipykernel
 pandas >= 2.0.0
 numpy
 matplotlib
-pyarrow
+
 

@@ -1,12 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pandas as pd
+import os
 
 class DataAquisition:
 
     def __init__(self, data):
         self.data = data
-    
+
+
+    """
+     Exercise 1 ------------------------------- Exercise 1
+    """
     
     @staticmethod
     def generate_2d_dist(size):
@@ -21,18 +26,23 @@ class DataAquisition:
         
         return random_combined
 
-
+    
     #Works for exercise 3 also
     def plot_histograms(self, bins=50):
         for i in range(self.data.shape[1]):
             plt.figure(figsize=(4, 6))
             plt.hist(self.data[:, i], bins=bins, density=True, alpha=0.7, color='blue')
-            plt.title(f'Histogram of Column {i}')
-            plt.xlabel(f'Values in Column {i}')
+            plt.title(f'Histogram of column {i}')         
+            plt.xlabel(f'Values in column {i}')
             plt.ylabel('Density')
             plt.grid(True)
             plt.show()
 
+
+
+    """
+     Exercise 2 ------------------------------- Exercise 2
+    """
 
     def plot_heatmap(self, bins=50, title='Heatmap of 2D Random Distribution'):
         plt.figure(figsize=(8, 6))
@@ -45,17 +55,80 @@ class DataAquisition:
         plt.show()
 
 
-    def plot_pmf(self, column=0):
-        values, counts = np.unique(self.data[:, column], return_counts=True)
+
+    """
+     Exercise 3 ------------------------------- Exercise 3
+    """
+    # Function to check if the file exists.
+    @staticmethod
+    def check_path(filepath):
+
+        if os.path.isfile(filepath):
+            return filepath
+        else:
+            raise FileNotFoundError(f"File not found: {filepath}")
+    
+    #Function to read selected columns from a TSV file. Also include the option to limit the number of rows read, used for finding the rows I need.
+    @staticmethod
+    def read_file_tsv(filepath, columns=None, nrows=5):
+
+        return pd.read_csv(filepath, sep='\t', usecols=columns, nrows=nrows)
+        
+
+    """
+     Exercise 4 ------------------------------- Exercise 4
+    """
+    @staticmethod
+    def calc_pmf(data):
+        values, counts = np.unique(data, return_counts=True)
         pmf = counts / counts.sum()
+        return values, pmf
+    
+    @staticmethod
+    def plot_discrete(data, column=0):
+        values, pmf = DataAquisition.calc_pmf(data[:, column])
         plt.figure(figsize=(6, 4))
-        plt.stem(values, pmf, use_line_collection=True)
+        plt.stem(values, pmf)
         plt.title(f'PMF of Column {column}')
         plt.xlabel('Value')
         plt.ylabel('Probability')
         plt.grid(True)
         plt.show()
 
+    def plot_all_pmfs(self):
+        for i in range(self.data.shape[1]):
+            try:
+
+                DataAquisition.plot_discrete(self.data, column=i)
+            except: 
+                print(f"Could not plot PMF for column {i}. Data might be non-numeric.")
+
+
+
+    """
+     Exercise 5 ------------------------------- Exercise 5
+    """
     
+    @staticmethod
+    def calc_cdf(data):
+        values, pmf = DataAquisition.calc_pmf(data)
+        cdf = np.cumsum(pmf)
+        return values, cdf
+    
+    def plot_all_cdfs(self):
+        for i in range(self.data.shape[1]):
+            try:
+                values, cdf = DataAquisition.calc_cdf(self.data[:, i])
+                plt.stem(values, cdf)
+                plt.title(f'CDF of Column {i}')
+                plt.xlabel('Value')
+                plt.ylabel('Probability')
+                plt.grid(True)
+                plt.show()
 
+            except:
+                print(f"Could not compute CDF for column {i}. Data might be non-numeric.")
 
+    def cdf(self, column=0):
+        values, cdf = DataAquisition.calc_cdf(self.data[:, column])
+        return values, cdf
