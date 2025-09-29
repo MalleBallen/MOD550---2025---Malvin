@@ -130,5 +130,6 @@ class DataAquisition:
                 print(f"Could not compute CDF for column {i}. Data might be non-numeric.")
 
     def cdf(self, column=0):
+        
         values, cdf = DataAquisition.calc_cdf(self.data[:, column])
         return values, cdf
