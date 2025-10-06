@@ -5,10 +5,17 @@ import os
 
 class DataAquisition:
 
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, data=None):
+        if data is None:
+            self.data = DataAquisition.generate_2d_dist(size=1000)
+        else:
+            self.data = data
+        self.basics_path_ = ("../title.basics.tsv")
+        self.ratings_path_ = ("../data/title.ratings.tsv")
 
-
+        #Check paths
+        self.check_paths()
+    
     """
      Exercise 1 ------------------------------- Exercise 1
     """
@@ -59,20 +66,24 @@ class DataAquisition:
     """
      Exercise 3 ------------------------------- Exercise 3
     """
-    # Function to check if the file exists.
-    @staticmethod
-    def check_path(filepath):
 
-        if os.path.isfile(filepath):
-            return filepath
-        else:
-            raise FileNotFoundError(f"File not found: {filepath}")
+    def check_paths(self):
+        for path in [self.basics_path_, self.ratings_path_]:
+            if not os.path.isfile(path):
+                raise FileNotFoundError(f"File not found: {path}")
+            else:
+                print(f"File found: {path}")
+
+    
     
     #Function to read selected columns from a TSV file. Also include the option to limit the number of rows read, used for finding the rows I need.
     @staticmethod
     def read_file_tsv(filepath, columns=None, nrows=5):
 
         return pd.read_csv(filepath, sep='\t', usecols=columns, nrows=nrows)
+    
+
+
         
 
     """
