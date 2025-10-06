@@ -6,15 +6,18 @@ import os
 class DataAquisition:
 
     def __init__(self, data=None):
-        if data is None:
-            self.data = DataAquisition.generate_2d_dist(size=1000)
-        else:
-            self.data = data
         self.basics_path_ = ("../title.basics.tsv")
         self.ratings_path_ = ("../data/title.ratings.tsv")
-
         #Check paths
         self.check_paths()
+
+        if data is None:
+            self.data = self.total_data()
+            self.histodata = self.data[['Release year', 'Rating', 'Number of votes', 'Runtime (minutes)']].to_numpy()
+        else:
+            self.data = data
+            self.histodata = data
+
     
     """
      Exercise 1 ------------------------------- Exercise 1
@@ -36,9 +39,9 @@ class DataAquisition:
     
     #Works for exercise 3 also
     def plot_histograms(self, bins=50):
-        for i in range(self.data.shape[1]):
+        for i in range(self.histodata.shape[1]):
             plt.figure(figsize=(4, 6))
-            plt.hist(self.data[:, i], bins=bins, density=True, alpha=0.7, color='blue')
+            plt.hist(self.histodata[:, i], bins=bins, density=True, alpha=0.7, color='blue')
             plt.title(f'Histogram of column {i}')         
             plt.xlabel(f'Values in column {i}')
             plt.ylabel('Density')
@@ -53,7 +56,7 @@ class DataAquisition:
 
     def plot_heatmap(self, bins=50, title='Heatmap of 2D Random Distribution'):
         plt.figure(figsize=(8, 6))
-        plt.hist2d(self.data[:, 0], self.data[:, 1], bins=bins, cmap='hot')
+        plt.hist2d(self.histodata[:, 0], self.histodata[:, 1], bins=bins, cmap='hot')
         plt.colorbar(label='Frequency')
         plt.title(title)
         plt.xlabel('X values')
@@ -82,9 +85,34 @@ class DataAquisition:
 
         return pd.read_csv(filepath, sep='\t', usecols=columns, nrows=nrows)
     
-
-
+    def clean_data(self, compiled_df):
+        # Remove rows with missing or non-numeric 'startYear'
+        compiled_df['startYear'] = pd.to_numeric(compiled_df['startYear'], errors='coerce') # Convert to numeric, setting errors to NaN
+        compiled_df['averageRating'] = pd.to_numeric(compiled_df['averageRating'], errors='coerce') # Convert to numeric, setting errors to NaN
+        compiled_df['numVotes'] = pd.to_numeric(compiled_df['numVotes'], errors='coerce') # Convert to numeric, setting errors to NaN
+        compiled_df['runtimeMinutes'] = pd.to_numeric(compiled_df['runtimeMinutes'], errors='coerce') # Convert to numeric, setting errors to NaN
         
+        compiled_df = compiled_df.rename(columns={
+            'tconst': 'Title ID',
+            'startYear': 'Release year',
+            'averageRating': 'Rating',
+            'numVotes': 'Number of votes',
+            'primaryTitle': 'Title',
+            'titleType': 'Type',
+            'runtimeMinutes': 'Runtime (minutes)',
+            'genres': 'Genres'
+        })
+        return compiled_df.dropna(subset=['Release year']).reset_index(drop=True)
+
+    def total_data(self):
+        data_b = self.read_file_tsv(self.basics_path_, columns=None, nrows=None)
+        data_r = self.read_file_tsv(self.ratings_path_,columns=None, nrows=None)
+        merged_data = pd.merge(data_b, data_r, on='tconst')
+        merged_data = merged_data[merged_data['numVotes'] >= 200]
+        merged_data = self.clean_data(merged_data)
+
+
+        return merged_data
 
     """
      Exercise 4 ------------------------------- Exercise 4
@@ -107,10 +135,10 @@ class DataAquisition:
         plt.show()
 
     def plot_all_pmfs(self):
-        for i in range(self.data.shape[1]):
+        for i in range(self.histodata.shape[1]):
             try:
 
-                DataAquisition.plot_discrete(self.data, column=i)
+                DataAquisition.plot_discrete(self.histodata, column=i)
             except: 
                 print(f"Could not plot PMF for column {i}. Data might be non-numeric.")
 
@@ -127,9 +155,9 @@ class DataAquisition:
         return values, cdf
     
     def plot_all_cdfs(self):
-        for i in range(self.data.shape[1]):
+        for i in range(self.histodata.shape[1]):
             try:
-                values, cdf = DataAquisition.calc_cdf(self.data[:, i])
+                values, cdf = DataAquisition.calc_cdf(self.histodata[:, i])
                 plt.stem(values, cdf)
                 plt.title(f'CDF of Column {i}')
                 plt.xlabel('Value')
@@ -141,6 +169,6 @@ class DataAquisition:
                 print(f"Could not compute CDF for column {i}. Data might be non-numeric.")
 
     def cdf(self, column=0):
-        
-        values, cdf = DataAquisition.calc_cdf(self.data[:, column])
+
+        values, cdf = DataAquisition.calc_cdf(self.histodata[:, column])
         return values, cdf
