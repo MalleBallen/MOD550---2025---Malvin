@@ -12,8 +12,9 @@ class DataAquisition:
         self.check_paths()
 
         if data is None:
+
             self.data = self.total_data()
-            self.histodata = self.data[['Release year', 'Rating', 'Number of votes', 'Runtime (minutes)']].to_numpy()
+            self.histodata = self.data[['Release year', 'Rating', 'Number of votes', 'Runtime']].to_numpy()
         else:
             self.data = data
             self.histodata = data
@@ -97,6 +98,7 @@ class DataAquisition:
 
         # Calculate number of letters in the title, without spaces and special characters
         compiled_df['Length of title'] = compiled_df['primaryTitle'].astype(str).apply(lambda x: sum(c.isalpha() for c in x))
+
         compiled_df = compiled_df.rename(columns={
             'tconst': 'Title ID',
             'startYear': 'Release year',
@@ -104,10 +106,10 @@ class DataAquisition:
             'numVotes': 'Number of votes',
             'primaryTitle': 'Title',
             'titleType': 'Type',
-            'runtimeMinutes': 'Runtime (minutes)',
+            'runtimeMinutes': 'Runtime',
             'genres': 'Genres'
         })
-        return compiled_df.dropna(subset=['Release year']).reset_index(drop=True)
+        return compiled_df.dropna(subset=['Release year', 'Rating', 'Number of votes', 'Runtime']).reset_index(drop=True)
 
     def total_data(self):
         data_b = self.read_file_tsv(self.basics_path_, columns=None, nrows=None)
