@@ -92,6 +92,11 @@ class DataAquisition:
         compiled_df['numVotes'] = pd.to_numeric(compiled_df['numVotes'], errors='coerce') # Convert to numeric, setting errors to NaN
         compiled_df['runtimeMinutes'] = pd.to_numeric(compiled_df['runtimeMinutes'], errors='coerce') # Convert to numeric, setting errors to NaN
         
+        # Calculate number of words in the title
+        compiled_df['Words in title'] = compiled_df['primaryTitle'].astype(str).apply(lambda x: len(x.split()))
+
+        # Calculate number of letters in the title, without spaces and special characters
+        compiled_df['Length of title'] = compiled_df['primaryTitle'].astype(str).apply(lambda x: sum(c.isalpha() for c in x))
         compiled_df = compiled_df.rename(columns={
             'tconst': 'Title ID',
             'startYear': 'Release year',
