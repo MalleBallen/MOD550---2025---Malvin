@@ -7,6 +7,7 @@ pandas >= 2.0.0
 numpy
 matplotlib
 tensorFlow # Which includes keras
+scikit-learn # For sklearn linear regression
 
 
 
