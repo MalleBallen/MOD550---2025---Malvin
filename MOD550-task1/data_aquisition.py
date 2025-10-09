@@ -92,7 +92,8 @@ class DataAquisition:
         compiled_df['averageRating'] = pd.to_numeric(compiled_df['averageRating'], errors='coerce') # Convert to numeric, setting errors to NaN
         compiled_df['numVotes'] = pd.to_numeric(compiled_df['numVotes'], errors='coerce') # Convert to numeric, setting errors to NaN
         compiled_df['runtimeMinutes'] = pd.to_numeric(compiled_df['runtimeMinutes'], errors='coerce') # Convert to numeric, setting errors to NaN
-        
+
+        compiled_df = compiled_df[compiled_df['runtimeMinutes'] < 2000].copy() # Remove unrealistic and outlying runtimes
         # Calculate number of words in the title
         compiled_df['Words in title'] = compiled_df['primaryTitle'].astype(str).apply(lambda x: len(x.split()))
 
