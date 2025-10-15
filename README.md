@@ -8,7 +8,7 @@ A repository in the course MOD550 - Fundaments of Machine Learning for and with 
 *Most undergraduates in engineering and science fields have little exposure to data methods, while most computer scientists and statisticians have little exposure to dynamical system control. Our goal is to provide an entry point and interface for both these groups of students.*  
 
 ****About me****  
-I'm a 25 year old from Arendal, currently living in Stavanger with my girlfriend. Despite having a full-time job as a purchaser in Aibel, I love a good challenge. That's why I'm doing my best to complete the master course on UiS in computational engineering on the alongside work. It might be a bit over my head, but at least I will give it my best shot :D  
+I'm a 25 year old from Arendal, currently living in Stavanger with my girlfriend. In addition to having a full-time job as a purchaser in Aibel, I love a good challenge. That's why I'm doing my best to complete the master course on UiS in computational engineering alongside work. It might be a bit over my head, but at least I will give it my best shot :D  
 *****Warning! Vital info ahead!*****  
 I have a 12 week old golden retriever (As of middle of september). This might or might not save lives. 🐶
 
