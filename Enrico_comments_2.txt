@@ -1,0 +1,30 @@
+
+Readme.md: Funny ones, but it contains the imp info. All respect for working + studying.
+
+Task 1: Good!
+Task 2: Good!
+Task 3: Good!
+Task 4: Good!
+Task 5: Good!
+Task 6: Good!
+Task 7: Good!
+Task 8: Good!
+Task 9: Good!
+
+Task 10 a: Good. The point here is that when you take one model or antoher, you assuming a certain shape of the truth.
+Task 10 b: ok 
+Task 10 c: good
+Task 10 d: good. You face the problem of large dataset and interpretation. Start from simple make up data! Work on this to prepare for the exam.
+Task 10 e: good, but again, think about a general case that can mimic your project. Train youself on this syntetic data and then focus on your project.
+
+Comments:
+=========
+
+python : missing. Great you imported from task1. To keep the notebook in order, the idea was to import all these funciton/classes from a python file and keep the notebook to do the visualizations.
+    
+jupyter notebook: good job, see point above to keep your notebook clean. 
+
+More Notes:
+task 2.10: Try for different distribution of initial data point:
+Here I mean to generate random data from different distributions. Flat, uniform, multimodal distributions. Different ranges, different noise level, different truth underlaying functions. Once you generate a bunch of data from different distributions, then you can use the different ML tools you implemented to make an analysis. As you will know how the generated data are, since you generate them youself, you can go back and assert if the prediction make any sense. Once you have aquired that awareness, THEN you have the expertize to effectively explore the project dataset. 
+
