@@ -2,19 +2,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
+from sklearn.model_selection import train_test_split
+import random
+
 
 class DataAquisition:
 
-    def __init__(self, data=None):
+    def __init__(self, data=None, rows_from_data=None):
         self.basics_path_ = ("../title.basics.tsv")
         self.ratings_path_ = ("../data/title.ratings.tsv")
+        self.rows_from_data = rows_from_data
         #Check paths
         self.check_paths()
 
         if data is None:
-
+        
             self.data = self.total_data()
             self.histodata = self.data[['Release year', 'Rating', 'Number of votes', 'Runtime']].to_numpy()
+                
+            
+
         else:
             self.data = data
             self.histodata = data
@@ -82,9 +89,11 @@ class DataAquisition:
     
     #Function to read selected columns from a TSV file. Also include the option to limit the number of rows read, used for finding the rows I need.
     @staticmethod
-    def read_file_tsv(filepath, columns=None, nrows=5):
-
-        return pd.read_csv(filepath, sep='\t', usecols=columns, nrows=nrows)
+    def read_file_tsv(filepath, columns=None, nrows=5, skiprows=None):
+        if skiprows is None:
+            return pd.read_csv(filepath, sep='\t', usecols=columns, nrows=nrows)
+        else:
+            return pd.read_csv(filepath, sep='\t', usecols=columns, skiprows=skiprows)
     
     def clean_data(self, compiled_df):
         # Remove rows with missing or non-numeric 'startYear'
@@ -113,8 +122,16 @@ class DataAquisition:
         return compiled_df.dropna(subset=['Release year', 'Rating', 'Number of votes', 'Runtime']).reset_index(drop=True)
 
     def total_data(self):
-        data_b = self.read_file_tsv(self.basics_path_, columns=None, nrows=None)
-        data_r = self.read_file_tsv(self.ratings_path_,columns=None, nrows=None)
+        if self.rows_from_data is None:
+            data_b = self.read_file_tsv(self.basics_path_, columns=None, nrows=None)
+            data_r = self.read_file_tsv(self.ratings_path_,columns=None, nrows=None)
+        else:
+            with open(self.basics_path_, encoding='utf-8') as f:
+                total_rows = sum(1 for line in f) - 1  # Subtract 1 for header
+            skip = sorted(random.sample(range(1, total_rows + 1 ), total_rows - self.rows_from_data))
+            data_b = self.read_file_tsv(self.basics_path_, columns=None, skiprows=skip)
+            data_r = self.read_file_tsv(self.ratings_path_,columns=None, nrows=None)
+
         merged_data = pd.merge(data_b, data_r, on='tconst')
         merged_data = merged_data[merged_data['numVotes'] >= 200]
         merged_data = self.clean_data(merged_data)
