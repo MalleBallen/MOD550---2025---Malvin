@@ -1,14 +1,16 @@
-# Requirements for the project
-# For markdown
+
+# Jupyter kernel
 ipykernel
 
-# For data processing and other tasks
-pandas >= 2.0.0
+# Data processing
+pandas>=2.0.0
 numpy
+
+# Visualization
 matplotlib
-tensorFlow # Which includes keras
-scikit-learn # For sklearn linear regression
+seaborn
 
-
-
-
+# Machine Learning
+tensorflow>=2.16  # Includes TensorFlow backend; use keras directly
+keras>=3
+scikit-learn
