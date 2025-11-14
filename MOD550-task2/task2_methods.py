@@ -9,8 +9,9 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LinearRegression
-import tf_keras as keras 
-from tf_keras import layers 
+#import tensorflow  
+#from tensorflow import keras
+#from tensorflow.keras import layers
 
 
 class DataModel:
