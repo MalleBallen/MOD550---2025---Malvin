@@ -1,0 +1,11 @@
+# Summary and Reflections
+
+In this project, I wanted to find out if it is possible to predict whether a movie will be a "success" or not, using some basic information about the movie. I defined a successful movie as one with an IMDb rating of 7 or higher. The features I used were the movie runtime, release year, number of words in the title, and the length of the title.
+
+To do this, I tried several different approaches. I used Support Vector Classifiers (SVC) with both linear and RBF kernels, a multivariate linear regression model, and a neural network. I split the data into training and test sets and made sure to normalize the features so that no feature would dominate the results.
+
+The results showed that the best model was the NN with logistics activation function, followed by the relu activation right behind. This means it was the best at correctly identifying successful movies and not making too many mistakes. The SVC, both with a linear kernel and rbf also did very well, which suggests that the data is almost linearly separable. The multivariate linear regression model was the least effective, which makes sense because it is not really designed for classification tasks.
+
+One important thing I learned is that the choice of model and its settings can make a difference, but sometimes the data itself is simple enough that even basic models work well. For example, if the data can be separated with a straight line, a linear SVC is almost as good as more complex models. The cost function in SVC controls how much the model tries to avoid mistakes on the training data. If C is too high, the model might overfit and not work well on new data. The kernel decides how the model draws the boundary between classes. The RBF kernel can handle more complex patterns, but in this case, the difference was small.
+
+Overall, I found that using different models and looking at several metrics; accuracy, precision, and recall, gives a better understanding of how well the classification works. For this dataset, the NN-classification was the best choice, but the linear SVC was almost as good and easier to understand. If I wanted to improve the results further, I could try adding more features. I could also for example have included a vector feature that shows what type of movie it is. 
